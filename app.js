@@ -1,29 +1,42 @@
-const express = require('express')// include librly express 
-const app = express() // ต้อง create express app ก่อน
-const port = 3000 // 
+const express = require("express");
+const app = express();
+const port = 3000;
+app.use(express.json())
 
-app.use(express.json()) //ตัวเอกเพรสจะใช้บอดี้เป็นเจสันได้
+class Pokemons
+{
+        constructor(name,type){
+        this.id = null
+        this.name = name
+        this.type = type
+        }
+}
+function generateId(){
+    let NewId = pokemons.length+1
+    return NewId
+}
 
-app.get ('/' , (req,res) => res.send('Hello World...'))
+function createPokemon(name,type){
+    let p = new Pokemons(name,type)
+    p.id = generateId()
+    return p
+}
 
-//GET
-let pokemons = [
-    { name: 'Pikachu', type: 'Electic' },
-    { name: 'Lizadon', type: 'Dragon' },
-    { name: 'Metapon', type: 'Bug'}
-];
-app.get ('/pokemons' , (req,res) => res.send(pokemons));
+let pokemons = []
+    pokemons.push(createPokemon('Praduk','Fish')),
+    pokemons.push(createPokemon('Prawit','Clock'))
 
-//POST
-app.post ('/pokemons' , (req,res) => {
-
-    //console.log(req.body)
-    //res.send('Still work on progress......... aaaaa')
-    pokemons.push(req.body)
+// GET pokemons -> list all pokemons https://localhost:3000 
+app.get("/pokemons", (req, res) => res.send(pokemons))
+// POST pokemons -> add pokemons list
+app.post("/pokemons", (req, res) => {
+    let p = new Pokemons(req.body.name , req.body.type)
+    p.id = generateId()
+    console.log(req.body)
+    pokemons.push(p)
     res.sendStatus(201)
 })
 
 
-app.listen(port, () => console.log(`Pokemons app listening on port ${port}!`)) //ให้แอปเริ่งทำงาน
-
+app.listen(port, () => console.log(`Pokemons app listening on port ${port}!`)) //ให้แอปเริมทำงาน
 
